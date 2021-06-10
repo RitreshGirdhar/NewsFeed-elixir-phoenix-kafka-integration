@@ -1,24 +1,27 @@
-# Elixir-phoenix-kafka-integration
+# Newsfeed Demo application to showcase Elixir + Phoenix integration with Apache kafka
 
+This application purely for learning purpose. While learning Elixir and Phoenix framework 
 
->.tools_version
+Pre-requisite
+* Some knowledge of asdf
+* Idea about Elixir, Phoenix, Mix, Erlang :How these works
+
+Lets start's and checkout this project.
+
+#### Run below command
 ``` 
-elixir 1.12.0-otp-24
-erlang 24.0.1
-nodejs 16.2.0
-```
-
+$ cd newsfeed/
 $ asdf install
-``` 
 elixir 1.12.0-otp-24 is already installed
 erlang 24.0.1 is already installed
 nodejs 16.2.0 is already installed
 ```
+To me it showing it is already installed, but in your case it will download the binaries and set up all three tools defined in .tools.version
 
-mix local.hex --if-missing --force
-``` 
-
-mix local.rebar --if-missing --force
+Now run below commands to set up mix
+```
+$ mix local.hex --if-missing --force 
+$ mix local.rebar --if-missing --force
 
 01:27:56.934 [warn]  Description: 'Authenticity is not established by certificate path validation'
      Reason: 'Option {verify, verify_peer} and cacertfile/cacerts is missing'
@@ -44,14 +47,12 @@ mix local.rebar --if-missing --force
 01:27:57.479 [warn]  Description: 'Authenticity is not established by certificate path validation'
      Reason: 'Option {verify, verify_peer} and cacertfile/cacerts is missing'
 
-* creating /Users/ritgirdh/.asdf/installs/elixir/1.12.0-otp-24/.mix/rebar3
-
-
+* creating /Users/<HOME>/.asdf/installs/elixir/1.12.0-otp-24/.mix/rebar3
 ```
 
-
+### Now install Phoenix 1.5 using below command
 ``` 
-h$ mix archive.install hex phx_new 1.5.9
+$ mix archive.install hex phx_new 1.5.9
 Resolving Hex dependencies...
 Dependency resolution completed:
 New:
@@ -62,11 +63,10 @@ Compiling 10 files (.ex)
 Generated phx_new app
 Generated archive "phx_new-1.5.9.ez" with MIX_ENV=prod
 Are you sure you want to install "phx_new-1.5.9.ez"? [Yn] Y
-* creating /Users/ritgirdh/.asdf/installs/elixir/1.12.0-otp-24/.mix/archives/phx_new-1.5.9
-
+* creating /Users/<HOME>/.asdf/installs/elixir/1.12.0-otp-24/.mix/archives/phx_new-1.5.9
 ```
 
-
+### Create Phoenix Project
 ``` 
 $ mix phx.new newsfeed
 * creating newsfeed/config/config.exs
@@ -141,30 +141,31 @@ You can also run your app inside IEx (Interactive Elixir) as:
 
 ```
 
+We have created a Phoenix project , now quicky start it 
+
 ``` 
-cd assets && npm install && node node_modules/webpack/bin/webpack.js --mode development
+$ cd assets && npm install && node node_modules/webpack/bin/webpack.js --mode development
 npm ERR! code 1
 npm ERR! path /Users/ritgirdh/Desktop/codebase/study/elixir-learning/Elixir-phoenix-kafka-integration/newsfeed/assets/node_modules/node-sass
 ```
 
-* Remove 
-```  
-"node-sass": "^4.13.1",
+If you are facing above issue, then you have to follow below steps 
 ```
-* Add
-``` 
-    "sass": "^1.32.8",
+$ cd newsfeed/assets/ 
+## open package.json and remove "node-sass": "^4.13.1" entry with the  "sass": "^1.32.8",
 ```
 
-Run again 
-``` cd assets && npm install && node node_modules/webpack/bin/webpack.js --mode development
+#### Now run again
+```
+cd assets && npm install && node node_modules/webpack/bin/webpack.js --mode development
 .....
-
+.....
 added 812 packages, and audited 815 packages in 18s
-
 ```
-Asset compilation is done
 
+#### Asset compilation is done
+
+#### Now lets configure postgres. Update username, password and database with the one you have on your local
 ``` 
 config :newsfeed, Newsfeed.Repo,
   username: "ritgirdh",
@@ -175,20 +176,26 @@ config :newsfeed, Newsfeed.Repo,
   pool_size: 10
 ```
 
+#### Now run below command to set up the project 
+
 ``` 
 $ mix ecto.create
 Compiling 14 files (.ex)
 Generated newsfeed app
 The database for Newsfeed.Repo has been created
-
 ```
 
+#### Now run below command to start the phoenix project 
 ``` 
 mix phx.server
 ```
 
-images/image1
+### Hurrey, you have successfully set up phoenix project
+![alt text](./images/image1.png)
 
+---
+
+### Now Add Kafka dependencies in Elixir  
 
 Add kafka dependency in mix.exs
 ```
