@@ -1,0 +1,13 @@
+<section class="row">
+  <article class="column">
+    <h2>Todays Feeds</h2>
+    <ul class="collection">
+    </ul>
+  </article>
+</section>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        window.createSocket()
+    });
+</script>
