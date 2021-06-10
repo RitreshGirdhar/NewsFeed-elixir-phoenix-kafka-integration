@@ -199,10 +199,16 @@ mix phx.server
 
 Add kafka dependency in mix.exs
 ```
-  {:kaffe, "~> 1.9"} 
+ defp deps do
+    [
+         ...
+         {:kaffe, "~> 1.9"}
+    ]
 ```
+
+#### Pull the dependency 
 ``` 
-mix deps.get
+$ mix deps.get
 Resolving Hex dependencies...
 Dependency resolution completed:
 Unchanged:
@@ -250,21 +256,19 @@ New:
 * Getting snappyer (Hex package)
 ```
 
+### Start kafka server, Skip this step if you already have kafka server running.
 
 ``` 
 $ docker run -d --name zookeeper -p 2181:2181 jplock/zookeeper
 $ docker run -d --name kafka -p 7203:7203 -p 9092:9092 -e KAFKA_ADVERTISED_HOST_NAME=192.168.1.4 -e ZOOKEEPER_IP=192.168.1.4 ches/kafka
-
-$ 
 $ docker run --rm ches/kafka kafka-topics.sh --create --topic newsfeed  --replication-factor 1 --partitions 1 --zookeeper 192.168.1.4
 Created topic "newsfeed".
-
 $ docker run --rm ches/kafka kafka-topics.sh --list --zookeeper  192.168.43.198
 __consumer_offsets
 newsfeed
 ```
 
-You could see in the elixir server console below kind of logs.
+#### In the elixir server console you will see below kind of logs, which means our phoenix application is able to listen to kafka
 ``` 
 :supervisor: {:local, :brod_sup}
     :started: [
@@ -287,13 +291,14 @@ You could see in the elixir server console below kind of logs.
 
 ```
 
+#### Push some messages into Kafka for testing
 ``` 
 $ docker run --rm --interactive ches/kafka kafka-console-producer.sh --topic newsfeed --broker-list 192.168.1.4:9092
 Lack of burial space is changing age-old funeral practices, and in Japan ???tree burials' are gaining
 ```
 
+#### You could see same message in phoenix server console.
 ``` 
-
 %{
   headers: [],
   key: "",
@@ -307,6 +312,9 @@ Lack of burial space is changing age-old funeral practices, and in Japan ???tree
 : Lack of burial space is changing age-old funeral practices, and in Japan ???tree burials' are gaining
 
 ```
+
+Now let's configure socker and channels in our news feed application
+
 
 
 
