@@ -244,5 +244,64 @@ New:
 ```
 
 
+``` 
+$ docker run -d --name zookeeper -p 2181:2181 jplock/zookeeper
+$ docker run -d --name kafka -p 7203:7203 -p 9092:9092 -e KAFKA_ADVERTISED_HOST_NAME=192.168.1.4 -e ZOOKEEPER_IP=192.168.1.4 ches/kafka
+
+$ 
+$ docker run --rm ches/kafka kafka-topics.sh --create --topic newsfeed  --replication-factor 1 --partitions 1 --zookeeper 192.168.1.4
+Created topic "newsfeed".
+
+$ docker run --rm ches/kafka kafka-topics.sh --list --zookeeper  192.168.43.198
+__consumer_offsets
+newsfeed
+```
+
+You could see in the elixir server console below kind of logs.
+``` 
+:supervisor: {:local, :brod_sup}
+    :started: [
+  pid: #PID<0.1150.0>,
+  id: :"learning-elixir",
+  mfargs: {:brod_client, :start_link,
+   [
+     [{'localhost', 9092}],
+     :"learning-elixir",
+     [
+       auto_start_producers: false,
+       allow_topic_auto_creation: false,
+       begin_offset: -1
+     ]
+   ]},
+  restart_type: {:permanent, 10},
+  shutdown: 5000,
+  child_type: :worker
+]
+
+```
+
+``` 
+$ docker run --rm --interactive ches/kafka kafka-console-producer.sh --topic newsfeed --broker-list 192.168.1.4:9092
+Lack of burial space is changing age-old funeral practices, and in Japan ???tree burials' are gaining
+```
+
+``` 
+
+%{
+  headers: [],
+  key: "",
+  offset: 3,
+  partition: 0,
+  topic: "newsfeed",
+  ts: 1623334135536,
+  ts_type: :create,
+  value: "Lack of burial space is changing age-old funeral practices, and in Japan ???tree burials' are gaining"
+}
+: Lack of burial space is changing age-old funeral practices, and in Japan ???tree burials' are gaining
+
+```
+
+
+
 
 

@@ -6,7 +6,9 @@ defmodule Newsfeed.Application do
   use Application
 
   def start(_type, _args) do
+    import Supervisor.Spec
     children = [
+      worker(Kaffe.Consumer, []),
       # Start the Ecto repository
       Newsfeed.Repo,
       # Start the Telemetry supervisor

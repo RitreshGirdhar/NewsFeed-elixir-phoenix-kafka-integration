@@ -32,7 +32,7 @@ config :kaffe,
          endpoints: [localhost: 9092],
          topics: ["newsfeed"],     # the topic(s) that will be consumed
          consumer_group: "learning-elixir",   # the consumer group for tracking offsets in Kafka
-         message_handler: Newsfeed.Consumer,           # the module that will process messages
+         message_handler: Consumer,           # the module that will process messages
        ]
 
 # Import environment specific config. This must remain at the bottom

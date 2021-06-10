@@ -71,8 +71,8 @@ function renderNews(event) {
      document.querySelector('.collection').innerHTML += renderedNew;
 }
 
-function contentTemplate(comment) {
-    return "<li class='collection-item'>"+ comment.content + "</li>";
+function contentTemplate(news) {
+    return "<li class='collection-item'>"+ news + "</li>";
 }
 window.createSocket = createSocket;
 
